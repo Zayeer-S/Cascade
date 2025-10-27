@@ -79,8 +79,8 @@ namespace cascade
     private:
         void updateFPS();
 
-        TimePoint startTime;
-        TimePoint lastFrameTime;
+        TimePoint startTime_;
+        TimePoint lastFrameTime_;
 
         float deltaTime_;
         float elapsedTime_;
@@ -90,7 +90,7 @@ namespace cascade
         unsigned int frameCount_;
 
         float fps_;
-        unsigned int frameSinceLastUpdate_;
+        unsigned int framesSinceLastFPSUpdate_;
         float timeSinceLastUpdate_;
     };
 }
