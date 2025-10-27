@@ -5,6 +5,11 @@
 
 namespace cascade
 {
+    /**
+     * @brief Enum of possible cell states in the simulation
+     * 
+     * Represents the different states a cell can be in during fire spread and supression operations.
+     */
     enum class CellState
     {
         Unburned,    ///< Cell has not been affected by fire
