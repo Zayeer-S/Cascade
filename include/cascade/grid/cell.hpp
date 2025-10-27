@@ -92,7 +92,7 @@ namespace cascade
         float burnTime_;
 
         void updateBurning(float deltaTime);
-        void updateSmoldering(float deltaTime);
+        void updateSmouldering(float deltaTime);
         void updateCooling(float deltaTime);
         void updateWet(float deltaTime);
 
