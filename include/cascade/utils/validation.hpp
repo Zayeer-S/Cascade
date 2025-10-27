@@ -9,13 +9,13 @@ namespace cascade
 {
     struct ValidationResult
     {
-        bool ok = true;
+        bool isValid = true;
         std::vector<std::string> errors;
         std::vector<std::string> warnings;
 
         void addError(std::string msg)
         {
-            ok = false;
+            isValid = false;
             errors.push_back(std::move(msg));
         }
 
