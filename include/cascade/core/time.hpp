@@ -1,5 +1,5 @@
 #ifndef CASCADE_CORE_TIME_HPP
-#define CASCADE_CORE_TIMEE_HPP
+#define CASCADE_CORE_TIME_HPP
 
 #include <chrono>
 
