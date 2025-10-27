@@ -1,48 +1,65 @@
-#include "cascade/utils/config.hpp";
-#include <iostream>
+#include "cascade/utils/config.hpp"
+#include <gtest/gtest.h>
 
 using namespace cascade;
 
-struct ConfigTestCase
+TEST(ConfigTest, DefaultConfigIsValid)
 {
-    std::string name;
-    Config config;
-    bool expectedValid;
-};
+    Config config = Config::createDefault();
+    auto result = config.validate();
 
-void testConfig()
+    EXPECT_TRUE(result.isValid) << "Default config should be valid";
+}
+
+TEST(ConfigTest, SmallConfigIsValid)
 {
-    std::cout << "=== Testing Config ===";
+    Config config = Config::createSmall();
+    auto result = config.validate();
 
-    int passCount = 0;
-    int failCount = 0;
+    EXPECT_TRUE(result.isValid) << "Small config should be valid";
+}
 
-    Config invalidConfig;
-    invalidConfig.grid.width = 0;
+TEST(ConfigTest, LargeConfigIsValid)
+{
+    Config config = Config::createLarge();
+    auto result = config.validate();
 
-    std::vector<ConfigTestCase> tests = {
-        {"default", Config::createDefault(), true},
-        {"small", Config::createSmall(), true},
-        {"large", Config::createLarge(), true},
-        {"invalid", invalidConfig, false}};
+    EXPECT_TRUE(result.isValid) << "Large config should be valid";
+}
 
-    for (const auto test : tests)
-    {
-        auto result = test.config.validate();
+TEST(ConfigTest, InvalidGridWidth)
+{
+    Config config = Config::createDefault();
+    config.grid.width = 0;
 
-        bool pass = (result.isValid == test.expectedValid);
+    auto result = config.validate();
+    EXPECT_FALSE(result.isValid) << "Config with zero grid width should be invalid";
+}
 
-        if (pass)
-        {
-            passCount++;
-        }
-        else
-        {
-            failCount++;
-        }
+TEST(ConfigTest, InvalidGridHeight)
+{
+    Config config = Config::createDefault();
+    config.grid.height = 0;
 
-        std::cout << "Validating" << test.name << " config: " << (pass ? "\tPASS" : "\tFAIL");
-    }
+    auto result = config.validate();
+    EXPECT_FALSE(result.isValid) << "Config with zero grid height should be invalid";
+}
 
-    std::cout << "=== Finished Testing Config (" << passCount << "/" << passCount + failCount << ")";
+TEST(ConfigTest, NegativeGridWidth)
+{
+    Config config = Config::createDefault();
+    config.grid.width = -10;
+
+    auto result = config.validate();
+    EXPECT_FALSE(result.isValid) << "Config with negative grid width should be invalid";
+}
+
+TEST(ConfigTest, ValidationErrorMessages)
+{
+    Config config = Config::createDefault();
+    config.grid.width = 0;
+
+    auto result = config.validate();
+    EXPECT_FALSE(result.isValid);
+    EXPECT_FALSE(result.errors.empty()) << "Invalid config should provide error messages";
 }
