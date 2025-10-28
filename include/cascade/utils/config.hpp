@@ -2,6 +2,7 @@
 #define CASCADE_UTILS_CONFIG_HPP
 
 #include "vector2d.hpp"
+#include "validation.hpp"
 #include <cstddef>
 #include <string>
 
@@ -18,7 +19,7 @@ namespace cascade
         struct FireConfig
         {
             float baseSpreadRate = 0.3f;                ///< Base probability of spread rate of fire per second
-            float inigtionTemp = 300.0f;                ///< Temp required for ignition (celsius)
+            float ignitionTemp = 300.0f;                ///< Temp required for ignition (celsius)
             float maxIntensity = 1000.0f;               ///< Maximum fire intensity/temp (celsius)
             float burnRate = 0.1f;                      ///< Fuel consumption rate (units/second)
             float heatTransfer = 50.0f;                 ///< Heat transfer rate to neighbours (celsius/second)
@@ -99,9 +100,8 @@ namespace cascade
         /**
          * @brief Validate configuration values
          * @return true if configuration is valid
-         * @note Not implemented for coursework MVP
          */
-        bool validate() const;
+        ValidationResult validate() const;
     };
 }
 
