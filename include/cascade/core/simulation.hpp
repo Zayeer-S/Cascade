@@ -102,6 +102,9 @@ namespace cascade
         void stop() { running_ = false;}
 
         private:
+        void updateStats();
+        void detectCellChanges();
+
         Grid grid_;
         Environment environment_;
         std::unique_ptr<FireModel> fireModel_;
