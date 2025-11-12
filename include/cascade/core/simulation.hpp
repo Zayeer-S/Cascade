@@ -43,7 +43,7 @@ namespace cascade
          * @brief Initialize simulation with fire model
          * @param fireModel Fire spread model (takes ownership)
          */
-        void Initialize(std::unique_ptr<FireModel> fireModel_);
+        void initialize(std::unique_ptr<FireModel> fireModel_);
 
         /**
          * @brief Reset simulation to initial state
