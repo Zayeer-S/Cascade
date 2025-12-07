@@ -1,5 +1,5 @@
-#ifndef CASCADE_SUPRESSION_SUPRESSIONAGENT_HPP
-#define CASCADE_SUPRESSION_SUPRESSIONAGENT_HPP
+#ifndef CASCADE_SUPPRESSION_SUPPRESSIONAGENT_HPP
+#define CASCADE_SUPPRESSION_SUPPRESSIONAGENT_HPP
 
 #include "cascade/core/simulation_observer.hpp"
 #include "cascade/grid/Grid.hpp"
@@ -10,11 +10,11 @@
 namespace cascade
 {
     /**
-     * @brief Abstract base class for fire supression agents
+     * @brief Abstract base class for fire suppression agents
      *
-     * Supression agents observe the simulation and apply water to cells to control fire spread.
+     * Suppression agents observe the simulation and apply water to cells to control fire spread.
      */
-    class SupressionAgent : public SimulationObserver
+    class SuppressionAgent : public SimulationObserver
     {
     public:
         /**
@@ -23,9 +23,9 @@ namespace cascade
          * @param waterCapacity Total water available (liters)
          * @param waterPerCell Amount of water per cell application
          */
-        SupressionAgent(const std::string &name, float waterCapacity, float waterPerCell = 0.5f);
+        SuppressionAgent(const std::string &name, float waterCapacity, float waterPerCell = 0.5f);
 
-        virtual ~SupressionAgent() = default;
+        virtual ~SuppressionAgent() = default;
 
         /**
          * @brief Called each step to decide and apply suppression
