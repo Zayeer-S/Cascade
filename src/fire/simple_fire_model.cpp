@@ -21,7 +21,7 @@ namespace cascade
                 continue;
             }
 
-            auto neighbours = grid.getNeighbhours8(source->getX(), source->getY());
+            auto neighbours = grid.getNeighbours8(source->getX(), source->getY());
 
             for (Cell *target : neighbours)
             {
