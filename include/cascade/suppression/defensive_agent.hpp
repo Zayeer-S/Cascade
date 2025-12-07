@@ -59,7 +59,7 @@ private:
      * @param grid Grid reference
      * @return Number of burning neighbors
      */
-    size_t countBurningNeighbors(const Cell* cell, const Grid& grid) const;
+    size_t countBurningNeighbours(const Cell* cell, const Grid& grid) const;
 
     Vector2D protectedZone_;
     float protectionRadius_;
