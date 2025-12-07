@@ -10,7 +10,7 @@ namespace cascade
     /**
      * @brief 2D grid container for simulation cells
      *
-     * Manages a rectangular grid of cells with wefficient neighbhour queries and iteration utilities.
+     * Manages a rectangular grid of cells with wefficient neighbour queries and iteration utilities.
      */
 
     class Grid
@@ -71,6 +71,7 @@ namespace cascade
          * @return Vector of pointers to neighbhour cells
          */
         std::vector<Cell *> getNeighbhours4(size_t x, size_t y);
+        std::vector<const Cell *> getNeighbhours4(size_t x, size_t y) const;
 
         /**
          * @brief Get 8-connected neighbhours (includes diagonals)
@@ -79,6 +80,7 @@ namespace cascade
          * @return Vector of pointers to neighbhour cells
          */
         std::vector<Cell *> getNeighbhours8(size_t x, size_t y);
+        std::vector<const Cell *> getNeighbhours8(size_t x, size_t y) const;
 
         /**
          * @brief Get all cells within specified radius
