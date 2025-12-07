@@ -1,5 +1,5 @@
-#ifndef CASCADE_AGENTS_SUPRESSIONAGENT_HPP
-#define CASCADE_AGENTS_SUPRESSIONAGENT_HPP
+#ifndef CASCADE_SUPRESSION_SUPRESSIONAGENT_HPP
+#define CASCADE_SUPRESSION_SUPRESSIONAGENT_HPP
 
 #include "cascade/core/simulation_observer.hpp"
 #include "cascade/grid/Grid.hpp"
