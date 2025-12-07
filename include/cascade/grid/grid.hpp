@@ -65,22 +65,22 @@ namespace cascade
         }
 
         /**
-         * @brief Get 4-connected neighbhours (N, S, E, W)
+         * @brief Get 4-connected neighbours (N, S, E, W)
          * @param x X co-ord
          * @param y Y co-ord
-         * @return Vector of pointers to neighbhour cells
+         * @return Vector of pointers to neighbour cells
          */
-        std::vector<Cell *> getNeighbhours4(size_t x, size_t y);
-        std::vector<const Cell *> getNeighbhours4(size_t x, size_t y) const;
+        std::vector<Cell *> getNeighbours4(size_t x, size_t y);
+        std::vector<const Cell *> getNeighbours4(size_t x, size_t y) const;
 
         /**
-         * @brief Get 8-connected neighbhours (includes diagonals)
+         * @brief Get 8-connected neighbours (includes diagonals)
          * @param x X co-ord
          * @param y Y co-ord
-         * @return Vector of pointers to neighbhour cells
+         * @return Vector of pointers to neighbour cells
          */
-        std::vector<Cell *> getNeighbhours8(size_t x, size_t y);
-        std::vector<const Cell *> getNeighbhours8(size_t x, size_t y) const;
+        std::vector<Cell *> getNeighbours8(size_t x, size_t y);
+        std::vector<const Cell *> getNeighbours8(size_t x, size_t y) const;
 
         /**
          * @brief Get all cells within specified radius
@@ -145,7 +145,7 @@ namespace cascade
         size_t width_;
         size_t height_;
 
-        void addNeighbourIfValid(std::vector<Cell *> &neighbhours, int x, int y);
+        void addNeighbourIfValid(std::vector<Cell *> &neighbours, int x, int y);
     };
 } // namespace cascade
 

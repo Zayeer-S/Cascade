@@ -41,20 +41,20 @@ namespace cascade
         return cells_[y][x];
     }
 
-    std::vector<Cell *> Grid::getNeighbhours4(size_t x, size_t y)
+    std::vector<Cell *> Grid::getNeighbours4(size_t x, size_t y)
     {
-        std::vector<Cell *> neighbhours;
-        neighbhours.reserve(4);
+        std::vector<Cell *> neighbours;
+        neighbours.reserve(4);
 
-        addNeighbourIfValid(neighbhours, x, y - 1); // Never
-        addNeighbourIfValid(neighbhours, x + 1, y); // Eat
-        addNeighbourIfValid(neighbhours, x, y + 1); // Sea
-        addNeighbourIfValid(neighbhours, x - 1, y); // Weed
+        addNeighbourIfValid(neighbours, x, y - 1); // Never
+        addNeighbourIfValid(neighbours, x + 1, y); // Eat
+        addNeighbourIfValid(neighbours, x, y + 1); // Sea
+        addNeighbourIfValid(neighbours, x - 1, y); // Weed
 
-        return neighbhours;
+        return neighbours;
     }
 
-    std::vector<Cell *> Grid::getNeighbhours8(size_t x, size_t y)
+    std::vector<Cell *> Grid::getNeighbours8(size_t x, size_t y)
     {
         std::vector<Cell *> neighbours;
         neighbours.reserve(8);
