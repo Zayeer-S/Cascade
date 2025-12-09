@@ -181,10 +181,10 @@ namespace cascade
         stats_.wetCells = grid_.countIf([](const Cell &c)
                                         { return c.getState() == CellState::Wet; });
 
-        stats_.supressedCells = grid_.countIf([](const Cell &c)
-                                               { return c.getState() == CellState::Supressed; });
+        stats_.suppressedCells = grid_.countIf([](const Cell &c)
+                                               { return c.getState() == CellState::Suppressed; });
 
-        stats_.totalCellsBurnedOut = stats_.burnedCells + stats_.supressedCells;
+        stats_.totalCellsBurnedOut = stats_.burnedCells + stats_.suppressedCells;
 
         size_t totalCells = grid_.getTotalCells();
         if (totalCells > 0)
@@ -210,7 +210,7 @@ namespace cascade
         }
         
         if (isBurning(previousState) && 
-            (currentState == CellState::Burned || currentState == CellState::Supressed)) {
+            (currentState == CellState::Burned || currentState == CellState::Suppressed)) {
             for (auto* observer : observers_) {
                 observer->onCellBurnedOut(cell.getX(), cell.getY());
             }
