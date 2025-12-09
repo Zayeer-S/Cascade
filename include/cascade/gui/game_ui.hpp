@@ -116,7 +116,8 @@ namespace cascade
             bool showHelp_;
             int mouseGridX_;
             int mouseGridY_;
-        }
+        };
+
     } // namespace gui
 
 } // namespace cascade
