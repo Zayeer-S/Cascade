@@ -36,7 +36,7 @@ namespace cascade
             break;
 
         case CellState::Burned:
-        case CellState::Supressed:
+        case CellState::Suppressed:
             updateCooling(deltaTime);
             break;
 
@@ -85,16 +85,20 @@ namespace cascade
         }
     }
 
-    void Cell::updateCooling(float deltaTime) {
-        if (temperature_ > AMBIENT_TEMP) {
+    void Cell::updateCooling(float deltaTime)
+    {
+        if (temperature_ > AMBIENT_TEMP)
+        {
             temperature_ = std::max(AMBIENT_TEMP, temperature_ - COOLING_RATE * deltaTime);
         }
     }
 
-    void Cell::updateWet(float deltaTime) {
+    void Cell::updateWet(float deltaTime)
+    {
         moisture_ -= WET_EVAPORATION * deltaTime;
 
-        if (moisture_ <= INTIIAL_MOISTURE) {
+        if (moisture_ <= INTIIAL_MOISTURE)
+        {
             state_ = CellState::Unburned;
             moisture_ = INTIIAL_MOISTURE;
         }
@@ -102,38 +106,55 @@ namespace cascade
         updateCooling(deltaTime);
     }
 
-    bool Cell::ignite(float intensity) {
-        if (!canIgnite()) {
+    bool Cell::ignite(float intensity)
+    {
+        if (!canIgnite())
+        {
             return false;
         }
 
-        if (moisture_ > 0.6f) {
+        if (moisture_ > 0.6f)
+        {
             return false;
         }
 
         state_ = CellState::Burning;
-        temperature_=std::max(temperature_, intensity);
+        temperature_ = std::max(temperature_, intensity);
         burnTime_ = 0.0f;
 
         return true;
     }
 
-    bool Cell::extinguish(float waterAmount) {
-        if (state_ == CellState::Burning || state_ == CellState::Smouldering) {
+    bool Cell::extinguish(float waterAmount)
+    {
+        if (state_ == CellState::Burning || state_ == CellState::Smouldering)
+        {
             temperature_ -= waterAmount * 100.0f;
 
+            // Add moisture
             moisture_ = std::min(1.0f, moisture_ + waterAmount * 0.1f);
 
-            if (temperature_ < IGNITION_TEMP) {
-                state_ = CellState::Supressed;
+            if (temperature_ < IGNITION_TEMP)
+            {
+                state_ = CellState::Suppressed;
                 burnTime_ = 0.0f;
                 return true;
             }
         }
+        else if (state_ == CellState::Unburned)
+        {
+            state_ = CellState::Wet;
+            moisture_ = std::min(1.0f, moisture_ + waterAmount * 0.1f);
+            return true;
+        }
+
+        return false;
     }
 
-    float Cell::getIntensity() const {
-        if (!isBurning()) {
+    float Cell::getIntensity() const
+    {
+        if (!isBurning())
+        {
             return 0.0f;
         }
 
@@ -142,19 +163,22 @@ namespace cascade
         return std::clamp(normalized, 0.0f, 1.0f);
     }
 
-    void Cell::reset() {
+    void Cell::reset()
+    {
         state_ = CellState::Unburned;
         fuel_ = INITIAL_FUEL;
         temperature_ = AMBIENT_TEMP;
         moisture_ = INTIIAL_MOISTURE;
         burnTime_ = 0.0f;
     }
-    
-    void Cell::transitionToSmouldering() {
+
+    void Cell::transitionToSmouldering()
+    {
         state_ = CellState::Smouldering;
     }
 
-    void Cell::transitionToBurned() {
+    void Cell::transitionToBurned()
+    {
         state_ = CellState::Burned;
         fuel_ = 0.0f;
         burnTime_ = 0.0f;
