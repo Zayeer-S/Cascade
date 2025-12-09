@@ -20,7 +20,7 @@ namespace cascade
         size_t burningCells;
         size_t burnedCells;
         size_t wetCells;
-        size_t supressedCells;
+        size_t suppressedCells;
 
         size_t totalCellsIgnited;
         size_t totalCellsBurnedOut;
@@ -35,7 +35,7 @@ namespace cascade
          * @brief Construct statistics with zeros/empty stats
          */
         SimulationStats()
-            : unburnedCells(0), burningCells(0), burnedCells(0), wetCells(0), supressedCells(0), totalCellsIgnited(0), totalCellsBurnedOut(0), simulationTime(0.0f), stepCount(0), percentBurned(0.0f), averageStepTime(0.0f)
+            : unburnedCells(0), burningCells(0), burnedCells(0), wetCells(0), suppressedCells(0), totalCellsIgnited(0), totalCellsBurnedOut(0), simulationTime(0.0f), stepCount(0), percentBurned(0.0f), averageStepTime(0.0f)
         {
         }
 
@@ -51,7 +51,7 @@ namespace cascade
          * @brief Get total number of cells
          */
         size_t getTotalCells() const {
-            return unburnedCells + burningCells + burnedCells + wetCells + supressedCells;
+            return unburnedCells + burningCells + burnedCells + wetCells + suppressedCells;
         }
 
         /**
