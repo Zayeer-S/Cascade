@@ -1,10 +1,9 @@
 #ifndef CASCADE_GUI_SDLRENDERER_HPP
 #define CASCADE_GUI_SDLRENDERER_HPP
 
-#include <SDL.h>
-#include "cascade/grid/Grid.hpp"
+#include <SDL2/SDL.h>
+#include "cascade/grid/grid.hpp"
 #include <string>
-#include <sddl.h>
 
 namespace cascade
 {
@@ -17,7 +16,8 @@ namespace cascade
         {
             uint8_t r, g, b, a;
 
-            Colour(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0, uint8_t alpha = 255) : r(red), g(green), b(blue), a(alpha) {}
+            Colour(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0, uint8_t alpha = 255)
+                : r(red), g(green), b(blue), a(alpha) {}
         };
 
         /**
@@ -67,7 +67,7 @@ namespace cascade
              * @param offsetX X offset for grid position
              * @param offsetY Y offset for grid position
              */
-            void renderGrid(const Grid &grid, int cellSize, );
+            void renderGrid(const Grid &grid, int cellSize, int offsetX, int offsetY);
 
             /**
              * @brief Render text
@@ -87,61 +87,61 @@ namespace cascade
              * @param colour Outline colour
              */
             void renderRect(int x, int y, int w, int h, const Colour &colour);
-        }
 
-        /**
-         * @brief Renderr outlined rectangle
-         * @param x X position
-         * @param y Y position
-         * @param w Width
-         * @param h Height
-         * @param colour Outline colour
-         */
-        void
-        renderRectOutline(int x, int y, int w, int h, const Colour &colour);
+            /**
+             * @brief Renderr outlined rectangle
+             * @param x X position
+             * @param y Y position
+             * @param w Width
+             * @param h Height
+             * @param colour Outline colour
+             */
+            void void renderRectOutline(int x, int y, int w, int h, const Colour &colour);
 
-        /**
-         * @brief Get window width
-         */
-        int getWidth() const { return width_; }
+            /**
+             * @brief Get window width
+             */
+            int getWidth() const { return width_; }
 
-        /**
-         * @brief Get window height
-         */
-        int getHeight() const { return height_; }
+            /**
+             * @brief Get window height
+             */
+            int getHeight() const { return height_; }
 
-        /**
-         * @brief Set close flag
-         */
-        void setShouldClose(bool close) { shouldClose_ = close; }
+            /**
+             * @brief Set close flag
+             */
+            void setShouldClose(bool close) { shouldClose_ = close; }
 
-        /**
-         * @brief Get SDL renderer (for advanced usage)
-         */
-        SDL_Renderer *getSDLRenderer() { return renderer_; }
+            /**
+             * @brief Get SDL renderer (for advanced usage)
+             */
+            SDL_Renderer *getSDLRenderer() { return renderer_; }
 
-    private:
-        /**
-         * @brief Get colour for cell state
-         * @param cell Cell to get colour for
-         * @return Colour for the cell
-         */
-        Colour getCellColour(const Cell &cell) const;
+        private:
+            /**
+             * @brief Get colour for cell state
+             * @param cell Cell to get colour for
+             * @return Colour for the cell
+             */
+            Colour getCellColour(const Cell &cell) const;
 
-        /**
-         * @brief Interpolate between two colours
-         * @param c1 First colour
-         * @param c2 Second colour
-         * @param t Interpolation factor (0-1)
-         * @return Interpolated colour
-         */
-        Color lerpColour(const Colour &c1, const Colour &c2, float t) const;
+            /**
+             * @brief Interpolate between two colours
+             * @param c1 First colour
+             * @param c2 Second colour
+             * @param t Interpolation factor (0-1)
+             * @return Interpolated colour
+             */
+            Colour lerpColour(const Colour &c1, const Colour &c2, float t) const;
 
-        SDL_Window *window_;
-        SDL_Renderer *renderer_;
-        int width_;
-        int height_;
-        bool shouldClose_;
+            SDL_Window *window_;
+            SDL_Renderer *renderer_;
+            int width_;
+            int height_;
+            bool shouldClose_;
+        };
+
     } // namespace gui
 } // namespace cascade
 
