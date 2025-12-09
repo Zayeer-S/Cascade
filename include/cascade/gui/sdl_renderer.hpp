@@ -16,7 +16,7 @@ namespace cascade
         {
             uint8_t r, g, b, a;
 
-            Colour(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0, uint8_t alpha = 255)
+            Colour(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0, uint8_t alpha = 255) 
                 : r(red), g(green), b(blue), a(alpha) {}
         };
 
@@ -96,7 +96,7 @@ namespace cascade
              * @param h Height
              * @param colour Outline colour
              */
-            void void renderRectOutline(int x, int y, int w, int h, const Colour &colour);
+            void renderRectOutline(int x, int y, int w, int h, const Colour &colour);
 
             /**
              * @brief Get window width
