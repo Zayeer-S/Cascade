@@ -1,7 +1,7 @@
 #ifndef CASCADE_GRID_GRID_HPP
 #define CASCADE_GRID_GRID_HPP
 
-#include "cell.hpp";
+#include "cell.hpp"
 #include <vector>
 #include <functional>
 
