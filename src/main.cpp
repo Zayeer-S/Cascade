@@ -42,9 +42,10 @@ void runConsoleSimulation()
 
     size_t centerX = config.grid.width / 2;
     size_t centerY = config.grid.height / 2;
+    std::cout << "Igniting cell at (" << centerX << ", " << centerY << ")\n";
     sim.getGrid().getCell(centerX, centerY).ignite();
-
-    std::cout << "Ignited cell at (" << centerX << ", " << centerY << ")\n";
+    sim.refresh();
+    
     std::cout << "Press Enter to start simulation...\n";
     std::cin.get();
 
@@ -54,7 +55,7 @@ void runConsoleSimulation()
     const float deltaTime = 0.1f;
     const size_t maxSteps = 50;
 
-    for (size_t step = 0; step < maxSteps && sim.isFireActive(); ++step)
+    for (size_t step = 0; step < maxSteps; ++step)
     {
         sim.step(deltaTime);
 
@@ -134,7 +135,6 @@ void runGuiSimulation()
 }
 #endif
 
-// https://www.asciiart.eu/text-to-ascii-art
 int main(int argc, char *argv[])
 {
     std::cout << R"(
@@ -183,5 +183,7 @@ int main(int argc, char *argv[])
 #endif
 
     std::cout << "\nThank you for using Cascade!\n";
+    std::cout << "\nPress Enter to exit...";
+    std::cin.get();
     return 0;
 }

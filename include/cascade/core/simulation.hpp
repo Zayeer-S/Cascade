@@ -36,8 +36,8 @@ namespace cascade
         Simulation(const Simulation &) = delete;
         Simulation &operator=(const Simulation &) = delete;
 
-        Simulation(Simulation&&) = default;
-        Simulation& operator=(Simulation&&) = default;
+        Simulation(Simulation &&) = default;
+        Simulation &operator=(Simulation &&) = default;
 
         /**
          * @brief Initialize simulation with fire model
@@ -55,7 +55,7 @@ namespace cascade
          * @param deltaTime Time step in seconds (default: 0.1)
          * @return true if simulation is still active
          */
-        bool step (float deltaTime=0.1f);
+        bool step(float deltaTime = 0.1f);
 
         /**
          * @brief Run simulation for specified duration
@@ -71,37 +71,39 @@ namespace cascade
          * @param deltaTime Time step per iteration (seconds)
          * @return Number of steps executed
          */
-        size_t runUntilComplete(size_t maxSteps = 0, float deltaTime=0.1f);
+        size_t runUntilComplete(size_t maxSteps = 0, float deltaTime = 0.1f);
 
-        void addObserver(SimulationObserver* observer);
-        void removeObserver(SimulationObserver* observer);
+        void addObserver(SimulationObserver *observer);
+        void removeObserver(SimulationObserver *observer);
         void notifyObservers();
 
-        Grid& getGrid() { return grid_; }
-        const Grid& getGrid() const { return grid_; }
+        Grid &getGrid() { return grid_; }
+        const Grid &getGrid() const { return grid_; }
 
-        Environment& getEnvironment() { return environment_; }
-        const Environment& getEnvironment() const { return environment_; }
-        
-        FireModel* getFireModel() { return fireModel_.get();}
-        const FireModel* getFireModel() const {return fireModel_.get();}
+        Environment &getEnvironment() { return environment_; }
+        const Environment &getEnvironment() const { return environment_; }
 
-        const SimulationStats& getStats() const {return stats_;}
+        FireModel *getFireModel() { return fireModel_.get(); }
+        const FireModel *getFireModel() const { return fireModel_.get(); }
 
-        const Time& getTime() const {return time_;}
+        const SimulationStats &getStats() const { return stats_; }
 
-        float getSimulationTime() const {return stats_.simulationTime;}
-        size_t getStepCount() const { return stats_.stepCount;}
+        const Time &getTime() const { return time_; }
 
-        bool isRunning() const {return running_;}
-        bool isFireActive() const {return stats_.isFireActive();}
+        float getSimulationTime() const { return stats_.simulationTime; }
+        size_t getStepCount() const { return stats_.stepCount; }
+
+        bool isRunning() const { return running_; }
+        bool isFireActive() const { return stats_.isFireActive(); }
 
         /**
          * @brief Stops the simulation
          */
-        void stop() { running_ = false;}
+        void stop() { running_ = false; }
 
-        private:
+        void refresh() { updateStats(); }
+
+    private:
         void updateStats();
         void detectCellChanges();
 
@@ -111,7 +113,7 @@ namespace cascade
         Time time_;
 
         SimulationStats stats_;
-        std::vector<SimulationObserver*> observers_;
+        std::vector<SimulationObserver *> observers_;
         bool running_;
         bool initialized_;
 
