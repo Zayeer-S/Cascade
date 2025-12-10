@@ -49,6 +49,7 @@ set(CASCADE_SOURCES
     src/grid/cell.cpp
     src/grid/grid.cpp
     src/fire/simple_fire_model.cpp
+    src/fire/fire_model.cpp
     src/suppression/suppression_agent.cpp
     src/suppression/aggressive_agent.cpp
     src/suppression/defensive_agent.cpp
