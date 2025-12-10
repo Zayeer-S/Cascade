@@ -1,4 +1,4 @@
-#include "cascade/grid/Grid.hpp"
+#include "cascade/grid/grid.hpp"
 #include <gtest/gtest.h>
 
 using namespace cascade;
@@ -45,28 +45,28 @@ TEST_F(GridTest, IsValid) {
     EXPECT_FALSE(grid->isValid(5, 10));
 }
 
-TEST_F(GridTest, GetNeighbors4Center) {
-    auto neighbors = grid->getNeighbors4(5, 5);
+TEST_F(GridTest, GetNeighbours4Center) {
+    auto neighbors = grid->getNeighbours4(5, 5);
     EXPECT_EQ(neighbors.size(), 4);
 }
 
-TEST_F(GridTest, GetNeighbors4Corner) {
-    auto neighbors = grid->getNeighbors4(0, 0);
+TEST_F(GridTest, GetNeighbours4Corner) {
+    auto neighbors = grid->getNeighbours4(0, 0);
     EXPECT_EQ(neighbors.size(), 2); 
 }
 
-TEST_F(GridTest, GetNeighbors4Edge) {
-    auto neighbors = grid->getNeighbors4(5, 0);
+TEST_F(GridTest, GetNeighbours4Edge) {
+    auto neighbors = grid->getNeighbours4(5, 0);
     EXPECT_EQ(neighbors.size(), 3);   
 }
 
-TEST_F(GridTest, GetNeighbors8Center) {
-    auto neighbors = grid->getNeighbors8(5, 5);
+TEST_F(GridTest, GetNeighbours8Center) {
+    auto neighbors = grid->getNeighbours8(5, 5);
     EXPECT_EQ(neighbors.size(), 8);
 }
 
-TEST_F(GridTest, GetNeighbors8Corner) {
-    auto neighbors = grid->getNeighbors8(0, 0);
+TEST_F(GridTest, GetNeighbours8Corner) {
+    auto neighbors = grid->getNeighbours8(0, 0);
     EXPECT_EQ(neighbors.size(), 3);
 }
 
@@ -175,6 +175,6 @@ TEST_F(GridTest, SmallGrid) {
     Grid small(3, 3);
     EXPECT_EQ(small.getTotalCells(), 9);
     
-    auto neighbors = small.getNeighbors4(1, 1);
+    auto neighbors = grid->getNeighbours4(1, 1);
     EXPECT_EQ(neighbors.size(), 4);
 }
