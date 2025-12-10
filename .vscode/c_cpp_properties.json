@@ -4,6 +4,9 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/include",
+                "${workspaceFolder}/build/vcpkg_installed/x64-windows/include",
+                "${workspaceFolder}/vcpkg_installed/x64-windows/include",
+                "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/vcpkg/installed/x64-windows/include",
                 "${workspaceFolder}/build/_deps/googletest-src/googletest/include",
                 "${workspaceFolder}/build/_deps/googletest-src/googlemock/include"
             ],
@@ -13,9 +16,9 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.latest/bin/Hostx64/x64/cl.exe",
+            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe",
             "cStandard": "c17",
-            "cppStandard": "c++20",
+            "cppStandard": "c++17",
             "intelliSenseMode": "windows-msvc-x64",
             "configurationProvider": "ms-vscode.cmake-tools",
             "compileCommands": "${workspaceFolder}/build/compile_commands.json"
