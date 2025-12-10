@@ -218,5 +218,7 @@ namespace cascade
         
         previousStates_[idx] = currentState;
         idx++; });
+
+        updateStats();
     }
 }
