@@ -236,21 +236,21 @@ namespace cascade
                 int maxBarWidth = panelW - 40;
 
                 // Unburned (green)
-                int unburnedWidth = (stats.unburnedCells * maxBarWidth) / totalCells;
+                int unburnedWidth = static_cast<int>((stats.unburnedCells * maxBarWidth) / totalCells);
                 renderer_.renderRect(panelX + 20, barY, unburnedWidth, barHeight, Colour(50, 150, 50));
 
                 // Burning (red)
-                int burningWidth = (stats.burningCells * maxBarWidth) / totalCells;
+                int burningWidth = static_cast<int>((stats.burningCells * maxBarWidth) / totalCells);
                 renderer_.renderRect(panelX + 20, barY + barHeight + barSpacing,
                                      burningWidth, barHeight, Colour(255, 50, 50));
 
                 // Burned (gray)
-                int burnedWidth = (stats.burnedCells * maxBarWidth) / totalCells;
+                int burnedWidth = static_cast<int>((stats.burnedCells * maxBarWidth) / totalCells);
                 renderer_.renderRect(panelX + 20, barY + 2 * (barHeight + barSpacing),
                                      burnedWidth, barHeight, Colour(80, 80, 80));
 
                 // Wet/Suppressed (blue)
-                int wetWidth = ((stats.wetCells + stats.suppressedCells) * maxBarWidth) / totalCells;
+                int wetWidth = static_cast<int>(((stats.wetCells + stats.suppressedCells) * maxBarWidth) / totalCells);
                 renderer_.renderRect(panelX + 20, barY + 3 * (barHeight + barSpacing),
                                      wetWidth, barHeight, Colour(50, 150, 255));
             }
@@ -315,7 +315,7 @@ namespace cascade
                 }
                 lastPrint = currentStep;
             }
-        };
+        }
 
     } // namespace gui
 } // namespace cascade
