@@ -1,5 +1,5 @@
-#include "cascade/fire/SimpleFireModel.hpp"
-#include "cascade/environment/Environment.hpp"
+#include "cascade/fire/simple_fire_model.hpp"
+#include "cascade/environment/environment.hpp"
 #include <gtest/gtest.h>
 
 using namespace cascade;
@@ -291,9 +291,9 @@ TEST_F(FireModelTest, ZeroDeltaTime) {
     EXPECT_EQ(burning, 1); // Only the initial cell
 }
 
-TEST_F(FireModelTest, SmolderingCellsCanSpread) {
+TEST_F(FireModelTest, SmoulderingCellsCanSpread) {
     // Manually set a cell to smoldering
-    grid->getCell(10, 10).setState(CellState::Smoldering);
+    grid->getCell(10, 10).setState(CellState::Smouldering);
     grid->getCell(10, 10).setTemperature(350.0f);
     
     fireModel->setBaseSpreadRate(1.0f);
@@ -303,7 +303,7 @@ TEST_F(FireModelTest, SmolderingCellsCanSpread) {
         fireModel->update(*grid, *environment, 0.1f);
     }
     
-    // Smoldering cells should be able to spread (though slower)
+    // Smouldering cells should be able to spread (though slower)
     size_t burning = grid->countIf([](const Cell& c) { return c.isBurning(); });
     EXPECT_GT(burning, 1);
 }
