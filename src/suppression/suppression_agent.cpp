@@ -4,7 +4,13 @@
 
 namespace cascade
 {
-    SuppressionAgent::SuppressionAgent(const std::string &name, float waterCapacity, float waterPerCell) : name_(name), waterCapacity_(waterCapacity), waterRemaining_(waterRemaining_), cellsSuppressed_(0), active_(true)
+    SuppressionAgent::SuppressionAgent(const std::string &name, float waterCapacity, float waterPerCell)
+        : name_(name),
+          waterCapacity_(waterCapacity),
+          waterRemaining_(waterCapacity),
+          waterPerCell_(waterPerCell),
+          cellsSuppressed_(0),
+          active_(true)
     {
     }
 
