@@ -48,7 +48,7 @@ TEST(ConfigTest, InvalidGridHeight)
 TEST(ConfigTest, NegativeGridWidth)
 {
     Config config = Config::createDefault();
-    config.grid.width = -10;
+    config.grid.width = static_cast<size_t>(-10);
 
     auto result = config.validate();
     EXPECT_FALSE(result.isValid) << "Config with negative grid width should be invalid";
