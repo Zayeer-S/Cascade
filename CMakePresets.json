@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "vcpkg-auto",
+      "displayName": "Windows with vcpkg (Auto-detect)",
+      "description": "Windows build with automatic vcpkg detection",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        }
+      }
+    },
+    {
+      "name": "vcpkg-manual",
+      "displayName": "Windows with vcpkg (Manual Path)",
+      "description": "Windows build with manual vcpkg path - EDIT THE PATH BELOW",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        }
+      }
+    },
+    {
+      "name": "windows-default",
+      "displayName": "Windows Default",
+      "description": "Default Windows build - tries to use vcpkg if available",
+      "inherits": "vcpkg-auto",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "windows-default"
+    }
+  ]
+}
