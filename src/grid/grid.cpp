@@ -46,10 +46,13 @@ namespace cascade
         std::vector<Cell *> neighbours;
         neighbours.reserve(4);
 
-        addNeighbourIfValid(neighbours, x, y - 1); // Never
-        addNeighbourIfValid(neighbours, x + 1, y); // Eat
-        addNeighbourIfValid(neighbours, x, y + 1); // Sea
-        addNeighbourIfValid(neighbours, x - 1, y); // Weed
+        int ix = static_cast<int>(x);
+        int iy = static_cast<int>(y);
+
+        addNeighbourIfValid(neighbours, ix, iy - 1); // Never
+        addNeighbourIfValid(neighbours, ix + 1, iy); // Eat
+        addNeighbourIfValid(neighbours, ix, iy + 1); // Sea
+        addNeighbourIfValid(neighbours, ix - 1, iy); // Weed
 
         return neighbours;
     }
@@ -59,13 +62,16 @@ namespace cascade
         std::vector<Cell *> neighbours;
         neighbours.reserve(8);
 
+        int ix = static_cast<int>(x);
+        int iy = static_cast<int>(y);
+
         for (int dy = -1; dy <= 1; ++dy)
         {
             for (int dx = -1; dx <= 1; ++dx)
             {
                 if (dx == 0 && dy == 0)
                     continue; // Skip centre
-                addNeighbourIfValid(neighbours, x + dx, y + dy);
+                addNeighbourIfValid(neighbours, ix + dx, iy + dy);
             }
         }
 
@@ -92,7 +98,7 @@ namespace cascade
 
                 if (distance <= radius)
                 {
-                    cells.push_back(&cells_[y][x]);
+                    cells.push_back(&cells_[cy][cx]);
                 }
             }
         }
