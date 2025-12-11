@@ -4,22 +4,15 @@
 
 namespace cascade
 {
-    namespace
-    {
-        constexpr float INITIAL_FUEL = 1.0f;
-        constexpr float INTIIAL_MOISTURE = 0.3f;
-        constexpr float AMBIENT_TEMP = 20.0f;
-        constexpr float IGNITION_TEMP = 300.0f;
-        constexpr float MAX_TEMP = 1000.0f;
-        constexpr float BURN_RATE = 0.5f;           // Fuel consumed per second
-        constexpr float COOLING_RATE = 10.0f;       // Temperature decrease per second
-        constexpr float HEAT_TRANSFER = 50.0f;      // Heat increase when burning
-        constexpr float SMOULDER_THRESHOLD = 0.3f;  // Fuel level to transition to smoldering
-        constexpr float SMOULDER_BURN_RATE = 0.03f; // Slower burn rate when smoldering
-        constexpr float WET_EVAPORATION = 0.05f;    // Moisture loss per second
-    }
-
-    Cell::Cell(size_t x, size_t y) : x_(x), y_(y), state_(CellState::Unburned), fuel_(INITIAL_FUEL), temperature_(AMBIENT_TEMP), moisture_(INTIIAL_MOISTURE), burnTime_(0.0f)
+    Cell::Cell(size_t x, size_t y, const Config &config)
+        : x_(x),
+          y_(y),
+          state_(CellState::Unburned),
+          fuel_(config.cell.initialFuel),
+          temperature_(config.fire.ambientTemp),
+          moisture_(config.cell.initialMoisture),
+          burnTime_(0.0f),
+          config_(config)
     {
     }
 
@@ -55,9 +48,10 @@ namespace cascade
     {
         burnTime_ += deltaTime;
 
-        fuel_ -= BURN_RATE * deltaTime;
+        fuel_ -= config_.fire.burnRate * deltaTime;
 
-        temperature_ = std::min(MAX_TEMP, temperature_ + HEAT_TRANSFER * deltaTime);
+        temperature_ = std::min(config_.fire.maxIntensity,
+                                temperature_ + config_.fire.heatTransfer * deltaTime);
 
         moisture_ = std::max(0.0f, moisture_ - 0.1f * deltaTime);
 
@@ -65,7 +59,7 @@ namespace cascade
         {
             transitionToBurned();
         }
-        else if (fuel_ < SMOULDER_THRESHOLD)
+        else if (fuel_ < config_.cell.smoulderThreshold)
         {
             transitionToSmouldering();
         }
@@ -75,9 +69,10 @@ namespace cascade
     {
         burnTime_ += deltaTime;
 
-        fuel_ -= SMOULDER_BURN_RATE * deltaTime;
+        fuel_ -= config_.cell.smoulderBurnRate * deltaTime;
 
-        temperature_ = std::max(IGNITION_TEMP, temperature_ - COOLING_RATE * deltaTime * 0.5f);
+        temperature_ = std::max(config_.fire.ignitionTemp,
+                                temperature_ - config_.fire.coolingRate * deltaTime * 0.5f);
 
         if (fuel_ <= 0.0f)
         {
@@ -87,20 +82,21 @@ namespace cascade
 
     void Cell::updateCooling(float deltaTime)
     {
-        if (temperature_ > AMBIENT_TEMP)
+        if (temperature_ > config_.fire.ambientTemp)
         {
-            temperature_ = std::max(AMBIENT_TEMP, temperature_ - COOLING_RATE * deltaTime);
+            temperature_ = std::max(config_.fire.ambientTemp,
+                                    temperature_ - config_.fire.coolingRate * deltaTime);
         }
     }
 
     void Cell::updateWet(float deltaTime)
     {
-        moisture_ -= WET_EVAPORATION * deltaTime;
+        moisture_ -= config_.cell.wetEvaporationRate * deltaTime;
 
-        if (moisture_ <= INTIIAL_MOISTURE)
+        if (moisture_ <= config_.cell.initialMoisture)
         {
             state_ = CellState::Unburned;
-            moisture_ = INTIIAL_MOISTURE;
+            moisture_ = config_.cell.initialMoisture;
         }
 
         updateCooling(deltaTime);
@@ -129,12 +125,12 @@ namespace cascade
     {
         if (state_ == CellState::Burning || state_ == CellState::Smouldering)
         {
-            temperature_ -= waterAmount * 100.0f;
+            temperature_ -= waterAmount * config_.suppression.waterEffectiveness;
 
             // Add moisture
-            moisture_ = std::min(1.0f, moisture_ + waterAmount * 0.1f);
+            moisture_ = std::min(1.0f, moisture_ + waterAmount * config_.cell.moistureGainPerWater);
 
-            if (temperature_ < IGNITION_TEMP)
+            if (temperature_ < config_.fire.ignitionTemp)
             {
                 state_ = CellState::Suppressed;
                 burnTime_ = 0.0f;
@@ -144,7 +140,7 @@ namespace cascade
         else if (state_ == CellState::Unburned)
         {
             state_ = CellState::Wet;
-            moisture_ = std::min(1.0f, moisture_ + waterAmount * 0.1f);
+            moisture_ = std::min(1.0f, moisture_ + waterAmount * config_.cell.moistureGainPerWater);
             return true;
         }
 
@@ -158,7 +154,8 @@ namespace cascade
             return 0.0f;
         }
 
-        float normalized = (temperature_ - IGNITION_TEMP) / (MAX_TEMP - IGNITION_TEMP);
+        float normalized = (temperature_ - config_.fire.ignitionTemp) /
+                           (config_.fire.maxIntensity - config_.fire.ignitionTemp);
 
         return std::clamp(normalized, 0.0f, 1.0f);
     }
@@ -166,9 +163,9 @@ namespace cascade
     void Cell::reset()
     {
         state_ = CellState::Unburned;
-        fuel_ = INITIAL_FUEL;
-        temperature_ = AMBIENT_TEMP;
-        moisture_ = INTIIAL_MOISTURE;
+        fuel_ = config_.cell.initialFuel;
+        temperature_ = config_.fire.ambientTemp;
+        moisture_ = config_.cell.initialMoisture;
         burnTime_ = 0.0f;
     }
 

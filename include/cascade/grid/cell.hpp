@@ -3,6 +3,7 @@
 
 #include "cell_state.hpp"
 #include "cascade/utils/vector2d.hpp"
+#include "cascade/utils/config.hpp"
 
 namespace cascade
 {
@@ -17,10 +18,11 @@ namespace cascade
     public:
         /**
          * @brief Construct a new cell
-         * @param x X coordinatein grid
+         * @param x X coordinate in grid
          * @param y Y coordinate in grid
+         * @param config Configuration reference for cell behavior
          */
-        Cell(size_t x, size_t y);
+        Cell(size_t x, size_t y, const Config& config);
 
         /**
          * @brief Update cell state based on elapsed time
@@ -90,6 +92,8 @@ namespace cascade
         float temperature_;
         float moisture_;
         float burnTime_;
+
+        const Config& config_;
 
         void updateBurning(float deltaTime);
         void updateSmouldering(float deltaTime);
