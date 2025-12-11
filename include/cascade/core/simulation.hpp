@@ -7,6 +7,7 @@
 #include "cascade/core/time.hpp"
 #include "cascade/core/simulation_stats.hpp"
 #include "cascade/core/simulation_observer.hpp"
+#include "cascade/utils/config.hpp"
 #include <memory>
 #include <vector>
 #include <chrono>
@@ -22,11 +23,10 @@ namespace cascade
     {
     public:
         /**
-         * @brief Construct simulation with grid dimensions
-         * @param width Grid width in cells
-         * @param height Grid height in cells
+         * @brief Construct simulation with config
+         * @param config Configuration for all simulation components
          */
-        Simulation(size_t width, size_t height);
+        Simulation(const Config &config);
 
         /**
          * @brief Destructor
@@ -52,26 +52,26 @@ namespace cascade
 
         /**
          * @brief Execute one simulation step
-         * @param deltaTime Time step in seconds (default: 0.1)
+         * @param deltaTime Time step in seconds (default: uses config.simulation.timeStep)
          * @return true if simulation is still active
          */
-        bool step(float deltaTime = 0.1f);
+        bool step(float deltaTime = 0.0f);
 
         /**
          * @brief Run simulation for specified duration
          * @param maxTime Maximum simulation time (seconds)
-         * @param deltaTime Time step per iteration (seconds)
+         * @param deltaTime Time step per iteration (default: uses config.simulation.timeStep)
          * @return Number of steps executed
          */
-        size_t run(float maxTime, float deltaTime = 0.1f);
+        size_t run(float maxTime, float deltaTime = 0.0f);
 
         /**
          * @brief Run simulation until fire burns out or max steps
-         * @param maxSteps Maximum steps to execute (0 = unlimited)
-         * @param deltaTime Time step per iteration (seconds)
+         * @param maxSteps Maximum steps to execute (0 = uses config.simulation.maxSteps)
+         * @param deltaTime Time step per iteration (default: uses config.simulation.timeStep)
          * @return Number of steps executed
          */
-        size_t runUntilComplete(size_t maxSteps = 0, float deltaTime = 0.1f);
+        size_t runUntilComplete(size_t maxSteps = 0, float deltaTime = 0.0f);
 
         void addObserver(SimulationObserver *observer);
         void removeObserver(SimulationObserver *observer);
@@ -107,6 +107,7 @@ namespace cascade
         void updateStats();
         void detectCellChanges();
 
+        const Config &config_;
         Grid grid_;
         Environment environment_;
         std::unique_ptr<FireModel> fireModel_;

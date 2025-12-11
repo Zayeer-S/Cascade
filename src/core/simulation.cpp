@@ -4,9 +4,23 @@
 
 namespace cascade
 {
-    Simulation::Simulation(size_t width, size_t height) : grid_(width, height), environment_(), fireModel_(nullptr), time_(), stats_(), observers_(), running_(false), initialized_(false), previousStates_(), lastStepTime_(std::chrono::high_resolution_clock::now())
+    Simulation::Simulation(const Config &config)
+        : config_(config),
+          grid_(config.grid.width, config.grid.height, config),
+          environment_(),
+          fireModel_(nullptr),
+          time_(),
+          stats_(),
+          observers_(),
+          running_(false),
+          initialized_(false),
+          previousStates_(),
+          lastStepTime_(std::chrono::high_resolution_clock::now())
     {
         previousStates_.resize(grid_.getTotalCells(), CellState::Unburned);
+
+        // Initialize environment from config
+        environment_.setWind(Wind(config.wind.direction, config.wind.speed, config.wind.enabled));
     }
 
     void Simulation::initialize(std::unique_ptr<FireModel> fireModel)
@@ -31,6 +45,7 @@ namespace cascade
     {
         grid_.reset();
         environment_.reset();
+        environment_.setWind(Wind(config_.wind.direction, config_.wind.speed, config_.wind.enabled));
 
         if (fireModel_)
         {
@@ -51,6 +66,12 @@ namespace cascade
         if (!initialized_ || !fireModel_)
         {
             return false;
+        }
+
+        // Use config timeStep if deltaTime not provided
+        if (deltaTime <= 0.0f)
+        {
+            deltaTime = config_.simulation.timeStep;
         }
 
         auto stepStart = std::chrono::high_resolution_clock::now();
@@ -112,6 +133,12 @@ namespace cascade
             return 0;
         }
 
+        // Use config timeStep if deltaTime not provided
+        if (deltaTime <= 0.0f)
+        {
+            deltaTime = config_.simulation.timeStep;
+        }
+
         size_t steps = 0;
         float elapsed = 0.0f;
 
@@ -129,6 +156,18 @@ namespace cascade
         if (!initialized_)
         {
             return 0;
+        }
+
+        // Use config timeStep if deltaTime not provided
+        if (deltaTime <= 0.0f)
+        {
+            deltaTime = config_.simulation.timeStep;
+        }
+
+        // Use config maxSteps if not provided
+        if (maxSteps == 0)
+        {
+            maxSteps = config_.simulation.maxSteps;
         }
 
         size_t steps = 0;
