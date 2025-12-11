@@ -2,6 +2,7 @@
 #define CASCADE_GRID_GRID_HPP
 
 #include "cell.hpp"
+#include "cascade/utils/config.hpp"
 #include <vector>
 #include <functional>
 
@@ -19,9 +20,10 @@ namespace cascade
         /**
          * @brief Construct a grid with specified dimensions
          * @param width number of cells in x dimension
-         * @param heigh number of cells in y dimension
+         * @param height number of cells in y dimension
+         * @param config Configuration reference for cells
          */
-        Grid(size_t width, size_t height);
+        Grid(size_t width, size_t height, const Config& config);
 
         /**
          * @brief Get cell at a specified position (w/ bounds checking)
@@ -144,6 +146,7 @@ namespace cascade
         std::vector<std::vector<Cell>> cells_;
         size_t width_;
         size_t height_;
+        const Config& config_;
 
         void addNeighbourIfValid(std::vector<Cell *> &neighbours, int x, int y);
     };

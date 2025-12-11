@@ -4,7 +4,8 @@
 
 namespace cascade
 {
-    Grid::Grid(size_t width, size_t height) : width_(width), height_(height)
+    Grid::Grid(size_t width, size_t height, const Config &config)
+        : width_(width), height_(height), config_(config)
     {
         if (width == 0 || height == 0)
         {
@@ -18,7 +19,7 @@ namespace cascade
             cells_[y].reserve(width);
             for (size_t x = 0; x < width; ++x)
             {
-                cells_[y].emplace_back(x, y);
+                cells_[y].emplace_back(x, y, config_);
             }
         }
     }
@@ -57,6 +58,31 @@ namespace cascade
         return neighbours;
     }
 
+    std::vector<const Cell *> Grid::getNeighbours4(size_t x, size_t y) const
+    {
+        std::vector<const Cell *> neighbours;
+        neighbours.reserve(4);
+
+        int ix = static_cast<int>(x);
+        int iy = static_cast<int>(y);
+
+        auto addIfValid = [this, &neighbours](int x, int y)
+        {
+            if (x >= 0 && x < static_cast<int>(width_) &&
+                y >= 0 && y < static_cast<int>(height_))
+            {
+                neighbours.push_back(&cells_[y][x]);
+            }
+        };
+
+        addIfValid(ix, iy - 1);
+        addIfValid(ix + 1, iy);
+        addIfValid(ix, iy + 1);
+        addIfValid(ix - 1, iy);
+
+        return neighbours;
+    }
+
     std::vector<Cell *> Grid::getNeighbours8(size_t x, size_t y)
     {
         std::vector<Cell *> neighbours;
@@ -72,6 +98,36 @@ namespace cascade
                 if (dx == 0 && dy == 0)
                     continue; // Skip centre
                 addNeighbourIfValid(neighbours, ix + dx, iy + dy);
+            }
+        }
+
+        return neighbours;
+    }
+
+    std::vector<const Cell *> Grid::getNeighbours8(size_t x, size_t y) const
+    {
+        std::vector<const Cell *> neighbours;
+        neighbours.reserve(8);
+
+        int ix = static_cast<int>(x);
+        int iy = static_cast<int>(y);
+
+        auto addIfValid = [this, &neighbours](int x, int y)
+        {
+            if (x >= 0 && x < static_cast<int>(width_) &&
+                y >= 0 && y < static_cast<int>(height_))
+            {
+                neighbours.push_back(&cells_[y][x]);
+            }
+        };
+
+        for (int dy = -1; dy <= 1; ++dy)
+        {
+            for (int dx = -1; dx <= 1; ++dx)
+            {
+                if (dx == 0 && dy == 0)
+                    continue;
+                addIfValid(ix + dx, iy + dy);
             }
         }
 
