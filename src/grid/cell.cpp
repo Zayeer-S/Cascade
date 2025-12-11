@@ -11,7 +11,7 @@ namespace cascade
         constexpr float AMBIENT_TEMP = 20.0f;
         constexpr float IGNITION_TEMP = 300.0f;
         constexpr float MAX_TEMP = 1000.0f;
-        constexpr float BURN_RATE = 0.1f;           // Fuel consumed per second
+        constexpr float BURN_RATE = 0.5f;           // Fuel consumed per second
         constexpr float COOLING_RATE = 10.0f;       // Temperature decrease per second
         constexpr float HEAT_TRANSFER = 50.0f;      // Heat increase when burning
         constexpr float SMOULDER_THRESHOLD = 0.3f;  // Fuel level to transition to smoldering
