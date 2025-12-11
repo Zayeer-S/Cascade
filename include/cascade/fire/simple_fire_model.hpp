@@ -2,6 +2,7 @@
 #define CASCADE_FIRE_SIMPLEFIREMODEL_HPP
 
 #include "fire_model.hpp"
+#include "cascade/utils/config.hpp"
 #include <random>
 
 namespace cascade
@@ -16,7 +17,7 @@ namespace cascade
          * Uses following rules for fire spreading:
          *
          */
-        explicit SimpleFireModel(unsigned int seed = 0);
+        explicit SimpleFireModel(const Config& config);
 
         void update(Grid &grid, const Environment &environment, float deltaTime) override;
 
@@ -24,14 +25,9 @@ namespace cascade
 
         void reset() override {}
 
-        void setBaseSpreadRate(float rate) { baseSpreadRate_ = rate; }
-        float getBaseSpreadRate() const { return baseSpreadRate_; }
-
-        void setWindInfluence(float rate) { windInfluence_ = rate; }
-        float getWindInfluence() const { return windInfluence_; }
-
-        void setDiagonalPenalty(float penalty) { diagonalPenalty_ = penalty; }
-        float getDiagonalPenalty() const { return diagonalPenalty_; }
+        float getBaseSpreadRate() const { return config_.fire.baseSpreadRate; }
+        float getWindInfluence() const { return config_.fireModel.windInfluence; }
+        float getDiagonalPenalty() const { return config_.fireModel.diagonalPenalty; }
 
     protected:
         float calculateSpreadProbability(
@@ -61,11 +57,7 @@ namespace cascade
             return dx != 0 && dy != 0;
         }
 
-        float baseSpreadRate_;
-        float windInfluence_;
-        float diagonalPenalty_;
-        float temperatureThreshold_;
-
+        const Config& config_;
         std::mt19937 rng_;
         std::uniform_real_distribution<float> dist_;
     };

@@ -4,7 +4,12 @@
 
 namespace cascade
 {
-    SimpleFireModel::SimpleFireModel(unsigned int seed) : baseSpreadRate_(0.3f), windInfluence_(0.5f), diagonalPenalty_(0.7f), temperatureThreshold_(300.0f), rng_(seed == 0 ? std::random_device{}() : seed) {}
+    SimpleFireModel::SimpleFireModel(const Config &config)
+        : config_(config),
+          rng_(config.simulation.randomSeed == 0 ? std::random_device{}() : config.simulation.randomSeed),
+          dist_(0.0f, 1.0f)
+    {
+    }
 
     void SimpleFireModel::update(Grid &grid, const Environment &environment, float deltaTime)
     {
@@ -16,7 +21,7 @@ namespace cascade
 
         for (Cell *source : burningCells)
         {
-            if (source->getTemperatureAmount() < temperatureThreshold_)
+            if (source->getTemperatureAmount() < config_.fire.ignitionTemp)
             {
                 continue;
             }
@@ -47,12 +52,12 @@ namespace cascade
         const Environment &environment,
         float deltaTime)
     {
-        float probability = baseSpreadRate_;
+        float probability = config_.fire.baseSpreadRate;
 
         probability += deltaTime;
 
         float intensityFactor = source.getIntensity();
-        probability *= (0.5f + 0.5f * intensityFactor);
+        probability *= (config_.fireModel.intensityMultiplier + config_.fireModel.intensityMultiplier * intensityFactor);
 
         float fuelFactor = target.getFuelAmount();
         probability *= fuelFactor;
@@ -69,29 +74,33 @@ namespace cascade
         }
         if (isDiagonal(dx, dy))
         {
-            probability *= diagonalPenalty_;
+            probability *= config_.fireModel.diagonalPenalty;
         }
 
-        const Weather& weather = environment.getWeather();
+        const Weather &weather = environment.getWeather();
 
-        float humidityFactor = 1.0f - (weather.humidity * 0.3f);
+        float humidityFactor = 1.0f - (weather.humidity * config_.fireModel.humidityEffect);
         probability *= humidityFactor;
 
-        if (weather.precipitation > 0.0f) {
+        if (weather.precipitation > 0.0f)
+        {
             float rainFactor = std::max(0.1f, 1.0f - weather.precipitation * 0.1f);
-            probability*=rainFactor;
+            probability *= rainFactor;
         }
 
         return std::clamp(probability, 0.0f, 1.0f);
     }
 
-    float SimpleFireModel::calculateWindFactor(int dx, int dy, const Wind& wind) const {
-        if (!wind.enabled || wind.speed < 0.1f) {
+    float SimpleFireModel::calculateWindFactor(int dx, int dy, const Wind &wind) const
+    {
+        if (!wind.enabled || wind.speed < 0.1f)
+        {
             return 1.0f;
         }
 
         Vector2D spreadDir(static_cast<float>(dx), static_cast<float>(dy));
-        if (spreadDir.lengthSquared() < 0.01f) {
+        if (spreadDir.lengthSquared() < 0.01f)
+        {
             return 1.0f;
         }
         spreadDir.normalize();
@@ -100,7 +109,7 @@ namespace cascade
 
         float windEffectStrength = std::min(wind.speed / 20.0f, 1.0f);
 
-        float netWindEffect = 1.0f + (alignmentAgainstWind * windInfluence_ * windEffectStrength);
+        float netWindEffect = 1.0f + (alignmentAgainstWind * config_.fireModel.windInfluence * windEffectStrength);
 
         return std::clamp(netWindEffect, 0.3f, 2.5f);
     }
