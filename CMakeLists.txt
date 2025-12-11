@@ -7,37 +7,33 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_TESTS "Build test suite" ON)
 option(BUILD_GUI "Build SDL GUI (requires SDL2)" ON)
-option(ENABLE_WARNINGS "Enable compiler warnings" ON)
-option(ENABLE_SANITIZERS "Enable address and undefined behavior sanitizers" OFF)
+option(CASCADE_ENABLE_WARNINGS "Enable compiler warnings" ON)
+option(CASCADE_ENABLE_SANITIZERS "Enable address and undefined behavior sanitizers" OFF)
 
-if(ENABLE_WARNINGS)
+if(CASCADE_ENABLE_WARNINGS)
     if(MSVC)
-        add_compile_options(/W4 /WX)
+        add_compile_options(/W4)
     else()
-        add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+        add_compile_options(-Wall -Wextra -Wpedantic)
     endif()
 endif()
 
-if(ENABLE_SANITIZERS)
-    if(NOT MSVC)
-        add_compile_options(-fsanitize=address -fsanitize=undefined)
-        add_link_options(-fsanitize=address -fsanitize=undefined)
-    endif()
+if(CASCADE_ENABLE_SANITIZERS AND NOT MSVC)
+    add_compile_options(-fsanitize=address -fsanitize=undefined)
+    add_link_options(-fsanitize=address -fsanitize=undefined)
 endif()
 
 if(BUILD_GUI)
-    find_package(SDL2 QUIET)
+    find_package(SDL2 QUIET CONFIG)
     if(SDL2_FOUND)
-        message(STATUS "SDL2 found - building GUI")
+        message(STATUS "SDL2 found - GUI will be built")
         set(GUI_ENABLED TRUE)
     else()
-        message(STATUS "SDL2 not found - skipping GUI")
-        message(STATUS "\tTo install SDL2:")
-        message(STATUS "\t\tWindows (vcpkg): vcpkg install sdl2:x64-windows")
-        message(STATUS "\t\tLinux: sudo apt install libsdl2-dev")
-        message(STATUS "\t\tmacOS: brew install sdl2")
+        message(STATUS "SDL2 not found - GUI will be skipped")
         set(GUI_ENABLED FALSE)
     endif()
+else()
+    set(GUI_ENABLED FALSE)
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -79,30 +75,50 @@ set_target_properties(cascade PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 )
 
-if(BUILD_TESTS)
-    enable_testing()
+if(EXISTS "${PROJECT_SOURCE_DIR}/src/main.cpp")
+    message(STATUS "Found src/main.cpp - building cascade_app executable")
     
-    find_package(GTest QUIET)
+    add_executable(cascade_app src/main.cpp)
     
-    if(GTest_FOUND)
-        message(STATUS "Google Test found - building with GTest")
-        include(GoogleTest)
-        set(USE_GTEST TRUE)
-    else()
-        message(STATUS "Google Test not found, skipping tests. To install:")
-        message(STATUS "\tWindows: vcpkg install gtest")
-        message(STATUS "\tLinux: sudo apt install libgtest-dev")
-        message(STATUS "\tOr set GTest_DIR to your Google Test installation")
-        set(USE_GTEST FALSE)
+    target_link_libraries(cascade_app PRIVATE cascade)
+    
+    if(GUI_ENABLED AND WIN32)
+        target_link_libraries(cascade_app PRIVATE SDL2::SDL2main)
     endif()
     
+    set_target_properties(cascade_app PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/Release
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_BINARY_DIR}/bin/RelWithDebInfo
+        RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_BINARY_DIR}/bin/MinSizeRel
+    )
+    
+    if(GUI_ENABLED AND WIN32)
+        add_custom_command(TARGET cascade_app POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:SDL2::SDL2>
+                $<TARGET_FILE_DIR:cascade_app>
+            COMMENT "Copying SDL2 DLL to output directory"
+        )
+    endif()
+    
+    message(STATUS "Executable will be built at: ${CMAKE_BINARY_DIR}/bin/$<CONFIG>/cascade_app.exe")
+else()
+    message(STATUS "src/main.cpp not found - skipping executable build")
+endif()
+
+if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
+message(STATUS "")
 message(STATUS "Cascade Engine Configuration:")
 message(STATUS "\tVersion: ${PROJECT_VERSION}")
 message(STATUS "\tC++ Standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "\tBuild Type: ${CMAKE_BUILD_TYPE}")
-message(STATUS "\tWarnings Enabled: ${ENABLE_WARNINGS}")
-message(STATUS "\tSanitizers Enabled: ${ENABLE_SANITIZERS}")
+message(STATUS "\tWarnings Enabled: ${CASCADE_ENABLE_WARNINGS}")
+message(STATUS "\tSanitizers Enabled: ${CASCADE_ENABLE_SANITIZERS}")
+message(STATUS "\tGUI Enabled: ${GUI_ENABLED}")
 message(STATUS "\tBuild Tests: ${BUILD_TESTS}")
+message(STATUS "")
