@@ -59,6 +59,14 @@ namespace cascade
             float waterEffectiveness = 100.0f;      ///< Temperature reduction per unit of water
         } suppression;
 
+        struct AgentConfig
+        {
+            float defaultWaterCapacity = 100.0f;    ///< Default agent water capacity
+            float defaultWaterPerCell = 0.5f;       ///< Default water per cell application
+            size_t defaultSpawnStep = 0;            ///< Default spawn step (0 = immediate)
+            size_t maxAgents = 10;                  ///< Maximum number of agents allowed
+        } agent;
+
         struct SimulationConfig
         {
             float timeStep = 0.1f;              ///< Fixed time step (seconds)
