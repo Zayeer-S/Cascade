@@ -28,7 +28,7 @@ namespace cascade
 
         struct FireConfig
         {
-            float baseSpreadRate = 0.3f;            ///< Base probability of spread rate of fire per second
+            float baseSpreadRate = 0.3f;            ///< Base probability of spread per second
             float ignitionTemp = 300.0f;            ///< Temp required for ignition (celsius)
             float maxIntensity = 1000.0f;           ///< Maximum fire intensity/temp (celsius)
             float burnRate = 0.5f;                  ///< Fuel consumption rate (units/second)

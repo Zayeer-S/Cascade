@@ -52,9 +52,7 @@ namespace cascade
         const Environment &environment,
         float deltaTime)
     {
-        float probability = config_.fire.baseSpreadRate;
-
-        probability += deltaTime;
+        float probability = config_.fire.baseSpreadRate * deltaTime;
 
         float intensityFactor = source.getIntensity();
         probability *= (config_.fireModel.intensityMultiplier + config_.fireModel.intensityMultiplier * intensityFactor);
