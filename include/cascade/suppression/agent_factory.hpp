@@ -44,7 +44,7 @@ namespace cascade
         static Vector2D getRandomPosition(const Grid &grid);
 
     private:
-        static std::mt19937 *getRNG();
+        static std::mt19937 &getRNG();
     };
 } // namespace cascade
 
