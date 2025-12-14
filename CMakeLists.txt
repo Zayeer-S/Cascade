@@ -46,9 +46,13 @@ set(CASCADE_SOURCES
     src/grid/grid.cpp
     src/fire/simple_fire_model.cpp
     src/fire/fire_model.cpp
-    src/suppression/suppression_agent.cpp
+    src/suppression/agent_factory.cpp
     src/suppression/aggressive_agent.cpp
     src/suppression/defensive_agent.cpp
+    src/suppression/suppression_agent.cpp
+    src/utils/agent_config.cpp
+    src/utils/config_builder.cpp
+    src/utils/input_helper.cpp
 )
 
 if(GUI_ENABLED)
