@@ -30,12 +30,18 @@ Cascade/
 │       │   ├── cell.hpp
 │       │   └── grid.hpp
 │       ├── gui/
-│       │   ├── sdl_renderer.hpp
+│       │   ├── game_ui.hpp
+│       │   └── sdl_renderer.hpp
 │       ├── supression/
+│       │   ├── agent_factory.hpp
 │       │   ├── aggressive_agent.hpp
 │       │   ├── defensive_agent.hpp
 │       │   └── supression_agent.hpp
+│       ├── ui/
+│       │   └── input_helper.hpp
 │       └── utils/
+│           ├── agent_config.hpp
+│           ├── config_builder.hpp
 │           ├── config.hpp
 │           ├── validation.hpp
 │           └── vector2d.hpp
@@ -51,13 +57,21 @@ Cascade/
 │   ├── grid/
 │   │   ├── cell.cpp
 │   │   └── grid.cpp
+│   ├── gui/
+│   │   ├── game_ui.cpp
+│   │   └── sdl_renderer.cpp
 │   ├── supression/
+│   │   ├── agent_factory.cpp
 │   │   ├── aggressive_agent.cpp
 │   │   ├── defensive_agent.cpp
 │   │   └── supression_agent.cpp
 │   ├── utils/
-│   │   └── config.cpp
-│   └── CMakeLists.cpp
+│   │   ├── agent_config.cpp
+│   │   ├── config_builder.cpp
+│   │   ├── config.cpp
+│   │   └── input_helper.cpp
+│   ├── CMakeLists.cpp
+│   └── main.cpp
 │
 ├── tests/
 │   ├── integration/
