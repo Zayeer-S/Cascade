@@ -21,7 +21,7 @@ WarningsAsErrors: >
   modernize-*,
   cppcoreguidelines-*
 
-HeaderFilterRegex: '.*include/cascade/.*'
+HeaderFilterRegex: '^.*/cascade/(include|src)/.*\.(h|hpp)$'
 
 FormatStyle: none
 
