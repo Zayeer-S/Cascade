@@ -1,4 +1,5 @@
 Checks: >
+  -*,
   clang-analyzer-*,
   bugprone-*,
   modernize-*,
